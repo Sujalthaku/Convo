@@ -1,0 +1,255 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ConcurrentModificationException;
+
+public class Edit {
+    private MyStack stack;
+    private File file;
+
+    public Edit(MyStack stack){
+        this.stack = stack;
+        file = new File(stack);
+    }
+    public Edit(){
+
+    }
+
+
+    public void btn(JButton btn1,JButton btn2){
+        btnColorFont(btn1 , btn2);
+        btn1.setPreferredSize(new Dimension(300,50));
+        btn2.setPreferredSize(new Dimension(300, 50));
+    }
+
+    public void btn(JButton btn1){
+        btn2(btn1);
+        btn1.setPreferredSize(new Dimension(300,50));
+        btn1.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    }
+
+    public void btn2(JButton btn1){
+        btn1.setFont(new Font("Arial Black", Font.PLAIN, 20));
+        btn1.setBackground(Color.yellow);
+        btn1.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+    public void btn3(JButton btn1){
+        btn2(btn1);
+        btn1.setPreferredSize(new Dimension(150,50));
+    }
+
+    public void btnSmall(JButton btn1,JButton btn2){
+        btnColorFont(btn1 , btn2);
+        btn1.setPreferredSize(new Dimension(150,50));
+        btn2.setPreferredSize(new Dimension(150, 50));
+    }
+
+    public void btnColorFont(JButton btn1, JButton btn2){
+        ButtonGroup group = new ButtonGroup();
+        group.add(btn1);
+        group.add(btn2);
+        btn1.setFont(new Font("Arial Black", Font.PLAIN, 20));
+        btn2.setFont(new Font("Arial Black", Font.PLAIN, 20));
+        btn1.setBackground(Color.yellow);
+        btn2.setBackground(Color.yellow);
+    }
+
+
+
+    public void popUpRandom(JLabel label){
+        JButton btn = new JButton("Try Again");
+        JFrame frame1 = new JFrame("Error");
+        popUp(btn,frame1,label,300);
+
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame1.dispose();
+            }
+        });
+
+        frame1.setVisible(true);
+    }
+
+
+    public void popUp(JButton btn1, JFrame frame2 , JLabel text, int width){
+        PopUpFrame(frame2,width);
+        PopUpText(text);
+        btn(btn1);
+
+        JPanel panel = new JPanel();
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(Box.createVerticalGlue());
+        panel.add(text);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(btn1);
+
+        panel.add(Box.createVerticalGlue());
+        panel.setBackground(Color.cyan);
+
+        frame2.add(panel);
+    }
+
+    public void PopUpFrame(JFrame frame ,int width){
+        frame.setSize(width, 200);
+        frame.setLocationRelativeTo(null);
+    }
+
+    public void PopUpText(JLabel text){
+        text.setFont(new Font("Serif", Font.PLAIN, 20));
+        text.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+    public JPanel registration(JTextField textField2,JTextField textField3,JTextField textField4,
+                             JTextField textField5,JFrame frame3,JButton btn3,JButton btn4){
+        frame3.setSize(600, 500);
+
+        JPanel panel = new JPanel();
+        panel.removeAll();
+
+        JLabel label = new JLabel("Registration");
+        label.setFont(new Font("Serif", Font.PLAIN, 40));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        btnSmall(btn3,btn4);
+
+        JPanel button = new JPanel();
+        button.setBackground(Color.PINK);
+        button.add(btn3);
+        button.add(btn4);
+
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.PINK);
+        panel.add(label);
+        panel.add(Registration(textField2,textField3,textField4,textField5));
+        panel.add(button);
+        frame3.add(panel);
+        frame3.setLocationRelativeTo(null);
+        return panel;
+    }
+
+    public JPanel Registration(JTextField textField2,JTextField textField3,
+                               JTextField textField4,JTextField textField5){
+        JPanel main = new JPanel();
+
+        JPanel textPanel = new JPanel();
+        JPanel textPanel2 = new JPanel();
+        JPanel textPanel3 = new JPanel();
+        JPanel textPanel4 = new JPanel();
+
+        JLabel textLabel = new JLabel("User ID");
+        JLabel textLabel2 = new JLabel("User Name");
+        JLabel textLabel3 = new JLabel("WorkPlace");
+        JLabel textLabel4 = new JLabel("Home Town");
+
+        textLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+        textLabel2.setFont(new Font("Serif", Font.PLAIN, 30));
+        textLabel3.setFont(new Font("Serif", Font.PLAIN, 30));
+        textLabel4.setFont(new Font("Serif", Font.PLAIN, 30));
+
+
+        textField2.setFont(new Font("Serif", Font.PLAIN, 30));
+        textField3.setFont(new Font("Serif", Font.PLAIN, 30));
+        textField4.setFont(new Font("Serif", Font.PLAIN, 30));
+        textField5.setFont(new Font("Serif", Font.PLAIN, 30));
+
+        textField2.setPreferredSize(new Dimension(300, 50));
+        textField3.setPreferredSize(new Dimension(300, 50));
+        textField4.setPreferredSize(new Dimension(300, 50));
+        textField5.setPreferredSize(new Dimension(300, 50));
+
+        textPanel.add(textLabel);
+        textPanel.add(textField2);
+        textPanel.setLayout(new FlowLayout(FlowLayout.CENTER , 95, 10));
+
+        textPanel2.add(textLabel2);
+        textPanel2.add(textField3);
+        textPanel2.setLayout(new FlowLayout(FlowLayout.CENTER , 50, 10));
+
+        textPanel3.add(textLabel3);
+        textPanel3.add(textField4);
+        textPanel3.setLayout(new FlowLayout(FlowLayout.CENTER , 53, 10));
+
+        textPanel4.add(textLabel4);
+        textPanel4.add(textField5);
+        textPanel4.setLayout(new FlowLayout(FlowLayout.CENTER , 38, 10));
+
+        main.add(textPanel);
+        main.add(textPanel2);
+        main.add(textPanel3);
+        main.add(textPanel4);
+
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+
+        textPanel.setBackground(Color.lightGray);
+        textPanel2.setBackground(Color.lightGray);
+        textPanel3.setBackground(Color.lightGray);
+        textPanel4.setBackground(Color.lightGray);
+        return main;
+    }
+
+    public char inputValidation(JTextField textField1 ,JTextField textField2,
+                                JTextField textField3,JTextField textField4){
+        boolean valid = false;
+        int ID = 0;
+        String name = "";
+        String work = "";
+        String home = "";
+        try {
+            ID = Integer.parseInt(textField1.getText());
+            name = textField2.getText();
+            work = textField3.getText();
+            home = textField4.getText();
+            if(name.matches("[a-zA-Z]+") &&
+                    work.matches("[a-zA-Z]+") &&
+                    home.matches("[a-zA-Z]+")){
+                valid = true;
+            }
+        } catch (NumberFormatException nfe) {
+            //
+        }
+
+        boolean check = stack.check(ID);
+
+        if (valid && !check){
+            return 'a';
+        }else if(valid){
+            return 'b';
+        }else{
+            return 'c';
+        }
+    }
+
+    public String likes(int id , String name,int n){
+            UserDetails details = stack.remove(id);
+            if(details!= null) {
+                String[] imG = details.getImage().split(":");
+                String[] lik = details.getLikes().split(":");
+                int likee = 0;
+                for (int i = 0; i < imG.length; i++) {
+                    if (imG[i].equals(name)) {
+                        likee = Integer.parseInt(lik[i]) + n;
+                        if (likee < 0) {
+                            likee = 1;
+                        }
+                        lik[i] = likee + "";
+                    }
+                }
+                String reversed = String.join(":", lik) + ":";
+                stack.addToStack(details.getID(), details.getName(),
+                        details.getWork(), details.getHome(), details.getFriends(),
+                        details.getImage(), reversed);
+                file.addToFile2();
+                return likee + "";
+            }else{
+                System.out.println("error4");
+            }
+        return null;
+    }
+
+}
