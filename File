@@ -1,0 +1,119 @@
+import java.io.*;
+
+public class File {
+
+    private final MyStack myStack;
+    private String userName;
+    private int userID;
+    private String userWork;
+    private String userHome;
+    private String userFriend;
+
+    public File(MyStack myStack){
+        this.myStack = myStack;
+    }
+
+    public File(MyStack myStack, int userID){
+        this.myStack = myStack;
+        this.userID = userID;
+        for (UserDetails details : myStack.getMyStack()) {
+            if(details.getID() == userID){
+                userName = details.getName();
+                userWork = details.getWork();
+                userHome = details.getHome();
+                userFriend = details.getFriends();
+            }
+        }
+    }
+
+    public void addToFile2(){
+        FileOutputStream outputStream = null;
+        PrintWriter printWriter = null;
+        boolean valid = false;
+        try
+        {
+            outputStream = new FileOutputStream("Detail.txt");
+            printWriter = new PrintWriter(outputStream);
+
+            for (UserDetails details : myStack.getMyStack()){
+                int id = details.getID();
+                String allData = details.getID() + "," + details.getName() + ","
+                        + details.getWork() + "," + details.getHome() + "," + details.getFriends()
+                        + "," + details.getImage() + "," + details.getLikes();
+                printWriter.println(allData);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("Sorry, there has been a problem opening or writing to the file");
+            System.out.println("/t" + e);
+        }
+        finally
+        {
+            if (printWriter != null){
+                printWriter.close();
+            }
+        }
+    }
+
+    public MyStack readFromAFile(){
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        try
+        {
+            fileReader = new FileReader("Detail.txt");
+            bufferedReader = new BufferedReader(fileReader);
+            String nextLine = bufferedReader.readLine();
+            while (nextLine != null)
+            {
+                String[] list = nextLine.split(",");
+                int ID = Integer.parseInt(list[0]);
+                String name = list[1];
+                String work = list[2];
+                String home = list[3];
+                String friends = "";
+                String image = "";
+                String like = "";
+                try {
+                    friends = list[4];
+
+                }catch (ArrayIndexOutOfBoundsException ai){
+                    //
+                }
+                try {
+                    image = list[5];
+
+                }catch (ArrayIndexOutOfBoundsException ai){
+                    //
+                }
+                try {
+                    like = list[6];
+
+                }catch (ArrayIndexOutOfBoundsException ai){
+                    //
+                }
+                myStack.addToStack(ID,name,work,home,friends,image,like);
+                nextLine = bufferedReader.readLine();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            System.out.println("file was not found");
+        }
+        catch (IOException e)
+        {
+            System.out.println("IO Error reading from file: " + e);
+        }
+        finally{
+            if (bufferedReader != null){
+                try{
+                    bufferedReader.close();
+                }
+                catch (IOException e)
+                {
+                }
+            }
+        }
+        return myStack;
+    }
+}
