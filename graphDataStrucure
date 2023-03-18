@@ -1,0 +1,161 @@
+import java.io.*;
+import java.security.spec.ECGenParameterSpec;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
+
+public class Graph {
+    static int v = 1;
+   public static ArrayList<Edge> graph[] = new ArrayList[v];
+   public  static int index;
+   public static String[] strArray;
+
+    static class Edge{
+        String name;
+        int id ;
+        String workPlace;
+        String homeTown;
+
+        int src;
+        int des;
+        public Edge(String n, int i, String wp, String ht, int c , int d){
+            this.name = n;
+            this.id = i;
+            this.workPlace = wp;
+            this.homeTown = ht;
+            this.src = c;
+            this.des = d;
+        }
+    }
+    public static void printGraph(){
+
+        for(int i = 0; i < graph[0].size(); i++){
+            Edge e = graph[0].get(i);
+            System.out.println("Name " + e.name + " ID " + e.id + " WorkPlace " + e.workPlace + " HomeTown " + e.homeTown + " Friends " + e.src);
+        }
+    }
+    public static void signUp(){
+        Scanner myObj = new Scanner(System.in);
+        System.out.println("Enter username");
+        String userName = myObj.nextLine();
+        if (!userName.matches("^[a-zA-Z]*$")) {
+            System.out.println("Error: Name must only contain English letters.");
+            userName = "";
+        }
+        System.out.println("Enter Id ");
+        int userId = myObj.nextInt();
+        if(!String.valueOf(userId).matches("\\d+")){
+            System.out.println("Error! User Input Should be Integer");
+            return;
+        }
+        System.out.println("Enter Work Place");
+        Scanner myObj1 = new Scanner(System.in);
+        String wPlace = myObj1.nextLine();
+        if (!wPlace.matches("^[a-zA-Z]*$")) {
+            System.out.println("Error: Work place must only contain English letters.");
+            wPlace = "";
+            return;
+        }
+        System.out.println("Enter home town");
+        Scanner myObj2 = new Scanner(System.in);
+        String hTown = myObj2.nextLine();
+        if (!hTown.matches("^[a-zA-Z]*$")) {
+            System.out.println("Error: Name must only contain English letters.");
+            hTown = "";
+            return;
+        }
+        for(int i = 0; i < graph.length; i++){
+            graph[i] = new ArrayList<Edge>();
+        }
+        graph[index].add(new Edge(userName,userId, wPlace, hTown, 0, 1));
+        index++;
+
+
+    }
+    public static void writeGraphInFile(){
+        try {
+            // Create a FileWriter object to write to the file
+            FileWriter writer = new FileWriter("D:\\GraphDataStructure\\Graph\\src\\OutputFile.txt");
+
+            // Create a BufferedWriter object to improve performance
+            BufferedWriter buffer = new BufferedWriter(writer);
+
+            // Write some text to the file
+            Edge p = graph[0].get(0);
+            buffer.write(p.name + " " + p.id +" "+ p.workPlace + " "+ p.homeTown );
+
+            // Close the buffer and writer to free resources
+            buffer.close();
+            writer.close();
+
+            System.out.println("Data written to file successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }}
+    public static String login() {
+        System.out.println("Enter User Id ");
+        Scanner myObj6 = new Scanner(System.in);
+        int uInputId = myObj6.nextInt();
+        String line = null;
+        try {
+            FileReader reader = new FileReader("D:\\GraphDataStructure\\Graph\\src\\OutputFile.txt");
+
+            BufferedReader buffer = new BufferedReader(reader);
+
+            // Read the file line by line
+            while ((line = buffer.readLine()) != null) {
+
+                strArray = line.split(" ");
+                if (uInputId == Integer.parseInt(strArray[1])) {
+                    System.out.println("Succesfull Login");
+                    System.out.println(line);
+                    break;
+                }
+            }
+            // Close the buffer and reader to free resources
+            buffer.close();
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        return line;
+    }
+    public static void friendSuggestion(String l){
+        String lines;
+        String[] youLine = l.split(" ");
+        String[] linesArray;
+        try {
+            FileReader reader = new FileReader("D:\\GraphDataStructure\\Graph\\src\\OutputFile.txt");
+
+            BufferedReader buffer = new BufferedReader(reader);
+
+            // Read the file line by line
+            while ((lines = buffer.readLine()) != null) {
+                //System.out.println(lines);
+                System.out.println(strArray[2]);
+                System.out.println("@@@@@@@@@@");
+                linesArray = lines.split(" ");
+                System.out.println(linesArray[2]);
+                if (linesArray[3] == strArray[3]) {
+                    System.out.println("Suggested Friends " + lines);
+                    break;
+                }
+                else {
+                   // System.out.println("no Friend Suggestions");
+                }
+            }
+            // Close the buffer and reader to free resources
+            buffer.close();
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+    public static void main(String[] args) {
+        signUp();
+       //printGraph();
+        writeGraphInFile();
+        login();
+       // friendSuggestion(login());
+
+    }
+}
