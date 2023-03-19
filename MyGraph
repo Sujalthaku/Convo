@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+
+public class MyGraph {
+    private ArrayList<UserDetails> users;
+    private ArrayList<ArrayList<Integer>> edges;
+
+    public MyGraph() {
+        users = new ArrayList<>();
+        edges = new ArrayList<>();
+    }
+
+    public void addUser(int ID , String name, String work, String home , String friends,
+                        String image, String likes) {
+        UserDetails ud = new UserDetails(ID,name,work,home,friends,image,likes);
+        addUser(ud);
+    }
+
+    public void addUser(UserDetails user) {
+        users.add(user);
+        edges.add(new ArrayList<Integer>());
+    }
+
+    public void addFriend(int userID, int friendID) {
+        int userIndex = -1;
+        int friendIndex = -1;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getID() == userID) {
+                userIndex = i;
+            }
+            if (users.get(i).getID() == friendID) {
+                friendIndex = i;
+            }
+            if (userIndex != -1 && friendIndex != -1) {
+                break;
+            }
+        }
+        if (userIndex != -1 && friendIndex != -1) {
+            edges.get(userIndex).add(friendIndex);
+            edges.get(friendIndex).add(userIndex);
+        }
+    }
+
+    public ArrayList<UserDetails> getUsers() {
+        return users;
+    }
+
+    public UserDetails getUserDetails(int userID) {
+        for (UserDetails user : users) {
+            if (user.getID() == userID) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<UserDetails> getUserFriends(int userID) {
+        ArrayList<UserDetails> userFriends = new ArrayList<>();
+        int userIndex = -1;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getID() == userID) {
+                userIndex = i;
+                break;
+            }
+        }
+        if (userIndex != -1) {
+            ArrayList<Integer> friendIndices = edges.get(userIndex);
+            for (int i = 0; i < friendIndices.size(); i++) {
+                int friendIndex = friendIndices.get(i);
+                UserDetails friend = users.get(friendIndex);
+                userFriends.add(friend);
+            }
+        }
+        return userFriends;
+    }
+
+    public ArrayList<UserDetails> getUsersByPlace(String place,char c) {
+        ArrayList<UserDetails> usersInplace = new ArrayList<>();
+        ArrayList<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            if(c == 'w') {
+                if (users.get(i).getWork().equals(place)) {
+                    indices.add(i);
+                }
+            }else {
+                if (users.get(i).getHome().equals(place)) {
+                    indices.add(i);
+                }
+            }
+        }
+        for (int index : indices) {
+            usersInplace.add(users.get(index));
+        }
+        return usersInplace;
+    }
+
+    public ArrayList<UserDetails> getUsersByNameSubstring(String nameSubstring) {
+        ArrayList<UserDetails> usersWithNameSubstring = new ArrayList<>();
+        for (UserDetails user : users) {
+            if (user.getName().toLowerCase().contains(nameSubstring.toLowerCase())) {
+                usersWithNameSubstring.add(user);
+            }
+        }
+        return usersWithNameSubstring;
+    }
+
+    public ArrayList<UserDetails> getUsersByPlace(String place, int FriendID,char ch) {
+        ArrayList<UserDetails> FriendOfFriends = getUserFriends(FriendID);
+        ArrayList<UserDetails> usersInplace = new ArrayList<>();
+        for(UserDetails details : FriendOfFriends){
+            if(ch == 'w') {
+                if (details.getWork().equals(place)) {
+                    usersInplace.add(details);
+                }
+            }else{
+                if (details.getHome().equals(place)) {
+                    usersInplace.add(details);
+                }
+            }
+        }
+        return usersInplace;
+    }
+
+}
